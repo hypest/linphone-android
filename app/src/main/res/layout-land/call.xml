@@ -117,6 +117,7 @@
                     android:id="@+id/vertical_divider"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:layout_centerHorizontal="true" />
 
                 <include layout="@layout/call_primary_buttons"
@@ -140,6 +141,7 @@
                     android:id="@+id/call_secondary_buttons"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:layout_toRightOf="@id/vertical_divider" />
 
             </RelativeLayout>
