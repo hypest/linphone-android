@@ -37,7 +37,7 @@ import org.linphone.utils.LinphoneUtils;
 
 public class MenuSettingsFragment extends SettingsFragment {
     private View mRootView;
-    private BasicSetting mTunnel, mAudio, mVideo, mCall, mChat, mNetwork, mAdvanced, mContact;
+    private BasicSetting mTunnel, mAudio, mVideo, mCall, mNetwork, mAdvanced, mContact;
     private LinearLayout mAccounts;
     private TextView mAccountsHeader;
 
@@ -71,8 +71,6 @@ public class MenuSettingsFragment extends SettingsFragment {
         mVideo = mRootView.findViewById(R.id.pref_video);
 
         mCall = mRootView.findViewById(R.id.pref_call);
-
-        mChat = mRootView.findViewById(R.id.pref_chat);
 
         mNetwork = mRootView.findViewById(R.id.pref_network);
 
@@ -123,17 +121,6 @@ public class MenuSettingsFragment extends SettingsFragment {
                                 .showSettings(
                                         new CallSettingsFragment(),
                                         getString(R.string.pref_call_title));
-                    }
-                });
-
-        mChat.setListener(
-                new SettingListenerBase() {
-                    @Override
-                    public void onClicked() {
-                        ((SettingsActivity) getActivity())
-                                .showSettings(
-                                        new ChatSettingsFragment(),
-                                        getString(R.string.pref_chat_title));
                     }
                 });
 

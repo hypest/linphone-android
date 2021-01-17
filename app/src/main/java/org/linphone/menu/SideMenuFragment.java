@@ -46,7 +46,6 @@ import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 import org.linphone.core.tools.Log;
-import org.linphone.recording.RecordingsActivity;
 import org.linphone.settings.LinphonePreferences;
 import org.linphone.settings.SettingsActivity;
 import org.linphone.utils.LinphoneUtils;
@@ -90,12 +89,6 @@ public class SideMenuFragment extends Fragment {
                     new SideMenuItem(
                             getResources().getString(R.string.inapp), R.drawable.menu_options));
         }
-        if (!getResources().getBoolean(R.bool.hide_recordings_from_side_menu)) {
-            sideMenuItems.add(
-                    new SideMenuItem(
-                            getResources().getString(R.string.menu_recordings),
-                            R.drawable.menu_recordings));
-        }
         sideMenuItems.add(
                 new SideMenuItem(
                         getResources().getString(R.string.menu_about), R.drawable.menu_about));
@@ -127,8 +120,6 @@ public class SideMenuFragment extends Fragment {
                             startActivity(new Intent(getActivity(), AboutActivity.class));
                         } else if (selectedItem.equals(getString(R.string.menu_assistant))) {
                             startActivity(new Intent(getActivity(), MenuAssistantActivity.class));
-                        } else if (selectedItem.equals(getString(R.string.menu_recordings))) {
-                            startActivity(new Intent(getActivity(), RecordingsActivity.class));
                         }
                     }
                 });

@@ -50,7 +50,6 @@ import org.linphone.R;
 import org.linphone.call.CallActivity;
 import org.linphone.call.CallIncomingActivity;
 import org.linphone.call.CallOutgoingActivity;
-import org.linphone.chat.ChatActivity;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.contacts.ContactsActivity;
 import org.linphone.contacts.ContactsManager;
@@ -58,8 +57,6 @@ import org.linphone.contacts.LinphoneContact;
 import org.linphone.core.Address;
 import org.linphone.core.AuthInfo;
 import org.linphone.core.Call;
-import org.linphone.core.ChatMessage;
-import org.linphone.core.ChatRoom;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.ProxyConfig;
@@ -68,7 +65,6 @@ import org.linphone.core.tools.Log;
 import org.linphone.dialer.DialerActivity;
 import org.linphone.fragments.EmptyFragment;
 import org.linphone.fragments.StatusBarFragment;
-import org.linphone.history.HistoryActivity;
 import org.linphone.menu.SideMenuFragment;
 import org.linphone.service.LinphoneService;
 import org.linphone.settings.LinphonePreferences;
@@ -81,12 +77,8 @@ public abstract class MainActivity extends LinphoneGenericActivity
     private static final int MAIN_PERMISSIONS = 1;
     protected static final int FRAGMENT_SPECIFIC_PERMISSION = 2;
 
-    private TextView mMissedCalls;
-    private TextView mMissedMessages;
     protected View mContactsSelected;
-    protected View mHistorySelected;
     protected View mDialerSelected;
-    protected View mChatSelected;
     private LinearLayout mTopBar;
     private TextView mTopBarTitle;
     private LinearLayout mTabBar;
@@ -109,16 +101,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
         mOnBackPressGoHome = true;
         mAlwaysHideTabBar = false;
 
-        RelativeLayout history = findViewById(R.id.history);
-        history.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
-                        addFlagsToIntent(intent);
-                        startActivity(intent);
-                    }
-                });
         RelativeLayout contacts = findViewById(R.id.contacts);
         contacts.setOnClickListener(
                 new View.OnClickListener() {
@@ -139,24 +121,9 @@ public abstract class MainActivity extends LinphoneGenericActivity
                         startActivity(intent);
                     }
                 });
-        RelativeLayout chat = findViewById(R.id.chat);
-        chat.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                        addFlagsToIntent(intent);
-                        startActivity(intent);
-                    }
-                });
 
-        mMissedCalls = findViewById(R.id.missed_calls);
-        mMissedMessages = findViewById(R.id.missed_chats);
-
-        mHistorySelected = findViewById(R.id.history_select);
         mContactsSelected = findViewById(R.id.contacts_select);
         mDialerSelected = findViewById(R.id.dialer_select);
-        mChatSelected = findViewById(R.id.chat_select);
 
         mTabBar = findViewById(R.id.footer);
         mTopBar = findViewById(R.id.top_bar);
@@ -181,10 +148,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
                         getSupportFragmentManager().findFragmentById(R.id.side_menu_fragment);
         mSideMenuFragment.setDrawer(mSideMenu, mSideMenuContent);
 
-        if (getResources().getBoolean(R.bool.disable_chat)) {
-            chat.setVisibility(View.GONE);
-        }
-
         mListener =
                 new CoreListenerStub() {
                     @Override
@@ -193,22 +156,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
                         if (state == Call.State.End || state == Call.State.Released) {
                             displayMissedCalls();
                         }
-                    }
-
-                    @Override
-                    public void onMessageReceived(Core core, ChatRoom room, ChatMessage message) {
-                        displayMissedChats();
-                    }
-
-                    @Override
-                    public void onChatRoomRead(Core core, ChatRoom room) {
-                        displayMissedChats();
-                    }
-
-                    @Override
-                    public void onMessageReceivedUnableDecrypt(
-                            Core core, ChatRoom room, ChatMessage message) {
-                        displayMissedChats();
                     }
 
                     @Override
@@ -294,10 +241,8 @@ public abstract class MainActivity extends LinphoneGenericActivity
             showTabBar();
         }
 
-        mHistorySelected.setVisibility(View.GONE);
         mContactsSelected.setVisibility(View.GONE);
         mDialerSelected.setVisibility(View.GONE);
-        mChatSelected.setVisibility(View.GONE);
 
         mStatusBarFragment.setMenuListener(this);
         mSideMenuFragment.setQuitListener(this);
@@ -310,7 +255,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
         Core core = LinphoneManager.getCore();
         if (core != null) {
             core.addListener(mListener);
-            displayMissedChats();
             displayMissedCalls();
         }
     }
@@ -330,12 +274,8 @@ public abstract class MainActivity extends LinphoneGenericActivity
 
     @Override
     protected void onDestroy() {
-        mMissedCalls = null;
-        mMissedMessages = null;
         mContactsSelected = null;
-        mHistorySelected = null;
         mDialerSelected = null;
-        mChatSelected = null;
         mTopBar = null;
         mTopBarTitle = null;
         mTabBar = null;
@@ -580,30 +520,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
         if (core != null) {
             count = core.getMissedCallsCount();
         }
-
-        if (count > 0) {
-            mMissedCalls.setText(String.valueOf(count));
-            mMissedCalls.setVisibility(View.VISIBLE);
-        } else {
-            mMissedCalls.clearAnimation();
-            mMissedCalls.setVisibility(View.GONE);
-        }
-    }
-
-    public void displayMissedChats() {
-        int count = 0;
-        Core core = LinphoneManager.getCore();
-        if (core != null) {
-            count = core.getUnreadChatMessageCountFromActiveLocals();
-        }
-
-        if (count > 0) {
-            mMissedMessages.setText(String.valueOf(count));
-            mMissedMessages.setVisibility(View.VISIBLE);
-        } else {
-            mMissedMessages.clearAnimation();
-            mMissedMessages.setVisibility(View.GONE);
-        }
     }
 
     // Navigation between actvities
@@ -731,38 +647,10 @@ public abstract class MainActivity extends LinphoneGenericActivity
         startActivity(intent);
     }
 
-    public void showChatRoom(Address localAddress, Address peerAddress) {
-        Intent intent = new Intent(this, ChatActivity.class);
-        addFlagsToIntent(intent);
-        if (localAddress != null) {
-            intent.putExtra("LocalSipUri", localAddress.asStringUriOnly());
-        }
-        if (peerAddress != null) {
-            intent.putExtra("RemoteSipUri", peerAddress.asStringUriOnly());
-        }
-        startActivity(intent);
-    }
-
     // Dialogs
 
     public Dialog displayDialog(String text) {
         return LinphoneUtils.getDialog(this, text);
-    }
-
-    public void displayChatRoomError() {
-        final Dialog dialog = displayDialog(getString(R.string.chat_room_creation_failed));
-        dialog.findViewById(R.id.dialog_delete_button).setVisibility(View.GONE);
-        Button cancel = dialog.findViewById(R.id.dialog_cancel_button);
-        cancel.setText(getString(R.string.ok));
-        cancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-
-        dialog.show();
     }
 
     private void displayDNDSettingsDialog() {

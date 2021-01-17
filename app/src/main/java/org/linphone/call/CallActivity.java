@@ -53,7 +53,6 @@ import org.linphone.LinphoneContext;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.activities.LinphoneGenericActivity;
-import org.linphone.chat.ChatActivity;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.contacts.ContactsManager;
 import org.linphone.contacts.ContactsUpdatedListener;
@@ -324,16 +323,6 @@ public class CallActivity extends LinphoneGenericActivity
                     @Override
                     public void onClick(View v) {
                         LinphoneManager.getCallManager().terminateCurrentCallOrConferenceOrAll();
-                    }
-                });
-
-        ImageView chat = findViewById(R.id.chat);
-        chat.setEnabled(!getResources().getBoolean(R.bool.disable_chat));
-        chat.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        goToChatList();
                     }
                 });
 
@@ -942,13 +931,6 @@ public class CallActivity extends LinphoneGenericActivity
         Intent intent = new Intent();
         intent.setClass(this, DialerActivity.class);
         intent.putExtra("isTransfer", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
-
-    private void goToChatList() {
-        Intent intent = new Intent();
-        intent.setClass(this, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }

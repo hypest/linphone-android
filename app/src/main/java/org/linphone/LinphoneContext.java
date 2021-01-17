@@ -172,11 +172,6 @@ public class LinphoneContext {
                             if (LinphoneService.isReady()) {
                                 LinphoneService.instance().destroyOverlay();
                             }
-
-                            if (state == Call.State.Released
-                                    && call.getCallLog().getStatus() == Call.Status.Missed) {
-                                mNotificationManager.displayMissedCallNotification(call);
-                            }
                         }
                     }
                 };

@@ -110,39 +110,7 @@
             android:noHistory="true"/>
 
         <activity
-            android:name=".recording.RecordingsActivity"
-            android:noHistory="true"/>
-
-        <activity
             android:name=".settings.SettingsActivity"/>
-
-        <activity
-            android:name=".chat.ChatActivity"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.OPENABLE" />
-
-                <data android:mimeType="text/*" />
-                <data android:mimeType="image/*" />
-                <data android:mimeType="audio/*" />
-                <data android:mimeType="video/*" />
-                <data android:mimeType="application/*" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND_MULTIPLE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.OPENABLE" />
-
-                <data android:mimeType="image/*" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".contacts.ContactsActivity"
@@ -152,14 +120,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="${linphone_address_mime_type}" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".history.HistoryActivity"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 

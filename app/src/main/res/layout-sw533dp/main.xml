@@ -98,44 +98,6 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/history"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/footer_button">
-
-                    <ImageView
-                        android:id="@+id/footer_history"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:contentDescription="@string/content_description_history"
-                        android:padding="15dp"
-                        android:src="@drawable/footer_history" />
-
-                    <View
-                        android:id="@+id/history_select"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="?attr/accentColor"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/missed_calls"
-                        style="@style/unread_count_font"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="20dp"
-                        android:background="@drawable/unread_message_count_bg"
-                        android:gravity="center"
-                        android:visibility="gone" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
                     android:id="@+id/contacts"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

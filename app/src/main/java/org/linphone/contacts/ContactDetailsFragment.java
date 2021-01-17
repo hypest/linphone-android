@@ -38,18 +38,9 @@ import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.activities.MainActivity;
 import org.linphone.contacts.views.ContactAvatar;
-import org.linphone.core.Address;
-import org.linphone.core.ChatRoom;
-import org.linphone.core.ChatRoomBackend;
-import org.linphone.core.ChatRoomListenerStub;
-import org.linphone.core.ChatRoomParams;
-import org.linphone.core.Core;
-import org.linphone.core.Factory;
-import org.linphone.core.FriendCapability;
 import org.linphone.core.PresenceBasicStatus;
 import org.linphone.core.PresenceModel;
 import org.linphone.core.ProxyConfig;
-import org.linphone.core.tools.Log;
 import org.linphone.settings.LinphonePreferences;
 import org.linphone.utils.LinphoneUtils;
 
@@ -60,8 +51,6 @@ public class ContactDetailsFragment extends Fragment implements ContactsUpdatedL
     private LayoutInflater mInflater;
     private View mView;
     private boolean mDisplayChatAddressOnly = false;
-    private ChatRoom mChatRoom;
-    private ChatRoomListenerStub mChatRoomCreationListener;
 
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,25 +133,6 @@ public class ContactDetailsFragment extends Fragment implements ContactsUpdatedL
         back.setVisibility(
                 getResources().getBoolean(R.bool.isTablet) ? View.INVISIBLE : View.VISIBLE);
 
-        mChatRoomCreationListener =
-                new ChatRoomListenerStub() {
-                    @Override
-                    public void onStateChanged(ChatRoom cr, ChatRoom.State newState) {
-                        if (newState == ChatRoom.State.Created) {
-                            mWaitLayout.setVisibility(View.GONE);
-                            ((ContactsActivity) getActivity())
-                                    .showChatRoom(cr.getLocalAddress(), cr.getPeerAddress());
-                        } else if (newState == ChatRoom.State.CreationFailed) {
-                            mWaitLayout.setVisibility(View.GONE);
-                            ((ContactsActivity) getActivity()).displayChatRoomError();
-                            Log.e(
-                                    "Group chat room for address "
-                                            + cr.getPeerAddress()
-                                            + " has failed !");
-                        }
-                    }
-                };
-
         return mView;
     }
 
@@ -185,9 +155,6 @@ public class ContactDetailsFragment extends Fragment implements ContactsUpdatedL
 
     @Override
     public void onPause() {
-        if (mChatRoom != null) {
-            mChatRoom.removeListener(mChatRoomCreationListener);
-        }
         ContactsManager.getInstance().removeContactsListener(this);
         super.onPause();
     }
@@ -317,116 +284,8 @@ public class ContactDetailsFragment extends Fragment implements ContactsUpdatedL
                 v.findViewById(R.id.contact_call).setVisibility(View.GONE);
             }
 
-            v.findViewById(R.id.contact_chat)
-                    .setOnClickListener(
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    goToChat((String) v.getTag(), false);
-                                }
-                            });
-            v.findViewById(R.id.contact_chat_secured)
-                    .setOnClickListener(
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    goToChat((String) v.getTag(), true);
-                                }
-                            });
-            if (contactAddress != null) {
-                v.findViewById(R.id.contact_chat).setTag(contactAddress);
-                v.findViewById(R.id.contact_chat_secured).setTag(contactAddress);
-            } else {
-                v.findViewById(R.id.contact_chat).setTag(value);
-                v.findViewById(R.id.contact_chat_secured).setTag(value);
-            }
-
-            if (v.findViewById(R.id.friendLinphone).getVisibility() == View.VISIBLE
-                    && mContact.hasPresenceModelForUriOrTelCapability(
-                            noa.getValue(), FriendCapability.LimeX3Dh)) {
-                v.findViewById(R.id.contact_chat_secured).setVisibility(View.VISIBLE);
-            } else {
-                v.findViewById(R.id.contact_chat_secured).setVisibility(View.GONE);
-            }
-
-            if (getResources().getBoolean(R.bool.force_end_to_end_encryption_in_chat)) {
-                v.findViewById(R.id.contact_chat).setVisibility(View.GONE);
-            }
-            if (getResources().getBoolean(R.bool.disable_chat)) {
-                v.findViewById(R.id.contact_chat).setVisibility(View.GONE);
-                v.findViewById(R.id.contact_chat_secured).setVisibility(View.GONE);
-            }
-
             if (!skip) {
                 controls.addView(v);
-            }
-        }
-    }
-
-    private void goToChat(String tag, boolean isSecured) {
-        Core core = LinphoneManager.getCore();
-        if (core == null) return;
-
-        Address participant = Factory.instance().createAddress(tag);
-        if (participant == null) {
-            Log.e("[Contact Detail] Couldn't parse ", tag);
-            return;
-        }
-        ProxyConfig defaultProxyConfig = core.getDefaultProxyConfig();
-
-        if (defaultProxyConfig != null) {
-            ChatRoom room =
-                    core.findOneToOneChatRoom(
-                            defaultProxyConfig.getIdentityAddress(), participant, isSecured);
-            if (room != null) {
-                ((ContactsActivity) getActivity())
-                        .showChatRoom(room.getLocalAddress(), room.getPeerAddress());
-            } else {
-                if (defaultProxyConfig.getConferenceFactoryUri() != null
-                        && (isSecured
-                                || !LinphonePreferences.instance().useBasicChatRoomFor1To1())) {
-                    mWaitLayout.setVisibility(View.VISIBLE);
-
-                    ChatRoomParams params = core.createDefaultChatRoomParams();
-                    params.enableEncryption(isSecured);
-                    params.enableGroup(false);
-                    // We don't want a basic chat room,
-                    // so if isSecured is false we have to set this manually
-                    params.setBackend(ChatRoomBackend.FlexisipChat);
-
-                    Address[] participants = new Address[1];
-                    participants[0] = participant;
-
-                    mChatRoom =
-                            core.createChatRoom(
-                                    params,
-                                    getString(R.string.dummy_group_chat_subject),
-                                    participants);
-                    if (mChatRoom != null) {
-                        mChatRoom.addListener(mChatRoomCreationListener);
-                    } else {
-                        Log.w("[Contact Details Fragment] createChatRoom returned null...");
-                        mWaitLayout.setVisibility(View.GONE);
-                    }
-                } else {
-                    room = core.getChatRoom(participant);
-                    if (room != null) {
-                        ((ContactsActivity) getActivity())
-                                .showChatRoom(room.getLocalAddress(), room.getPeerAddress());
-                    }
-                }
-            }
-        } else {
-            if (isSecured) {
-                Log.e(
-                        "[Contact Details Fragment] Can't create a secured chat room without proxy config");
-                return;
-            }
-
-            ChatRoom room = core.getChatRoom(participant);
-            if (room != null) {
-                ((ContactsActivity) getActivity())
-                        .showChatRoom(room.getLocalAddress(), room.getPeerAddress());
             }
         }
     }

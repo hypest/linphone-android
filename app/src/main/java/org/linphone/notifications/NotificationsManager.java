@@ -30,37 +30,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.service.notification.StatusBarNotification;
-import java.io.File;
 import java.util.HashMap;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.call.CallActivity;
 import org.linphone.call.CallIncomingActivity;
 import org.linphone.call.CallOutgoingActivity;
-import org.linphone.chat.ChatActivity;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.contacts.ContactsManager;
 import org.linphone.contacts.LinphoneContact;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
-import org.linphone.core.ChatMessage;
-import org.linphone.core.ChatMessageListenerStub;
-import org.linphone.core.ChatRoom;
-import org.linphone.core.ChatRoomCapabilities;
-import org.linphone.core.Content;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
-import org.linphone.core.Reason;
 import org.linphone.core.tools.Log;
 import org.linphone.dialer.DialerActivity;
-import org.linphone.history.HistoryActivity;
 import org.linphone.service.LinphoneService;
 import org.linphone.settings.LinphonePreferences;
 import org.linphone.utils.DeviceUtils;
-import org.linphone.utils.FileUtils;
 import org.linphone.utils.ImageUtils;
 import org.linphone.utils.LinphoneUtils;
-import org.linphone.utils.MediaScannerListener;
 
 public class NotificationsManager {
     private static final int SERVICE_NOTIF_ID = 1;
@@ -73,16 +62,13 @@ public class NotificationsManager {
     private int mLastNotificationId;
     private final Notification mServiceNotification;
     private int mCurrentForegroundServiceNotification;
-    private String mCurrentChatRoomAddress;
     private CoreListenerStub mListener;
-    private ChatMessageListenerStub mMessageListener;
 
     public NotificationsManager(Context context) {
         mContext = context;
         mChatNotifMap = new HashMap<>();
         mCallNotifMap = new HashMap<>();
         mCurrentForegroundServiceNotification = 0;
-        mCurrentChatRoomAddress = null;
 
         mNM = (NotificationManager) mContext.getSystemService(NOTIFICATION_SERVICE);
 
@@ -129,140 +115,7 @@ public class NotificationsManager {
                         Notification.PRIORITY_MIN,
                         true);
 
-        mListener =
-                new CoreListenerStub() {
-                    @Override
-                    public void onMessageSent(Core core, ChatRoom room, ChatMessage message) {
-                        if (room.hasCapability(ChatRoomCapabilities.OneToOne.toInt())) {
-                            Compatibility.createChatShortcuts(mContext);
-                        }
-                    }
-
-                    @Override
-                    public void onMessageReceived(
-                            Core core, final ChatRoom cr, final ChatMessage message) {
-                        if (message.isOutgoing()
-                                || mContext.getResources().getBoolean(R.bool.disable_chat)
-                                || mContext.getResources()
-                                        .getBoolean(R.bool.disable_chat_message_notification)) {
-                            return;
-                        }
-
-                        if (mCurrentChatRoomAddress != null
-                                && mCurrentChatRoomAddress.equals(
-                                        cr.getPeerAddress().asStringUriOnly())) {
-                            Log.i(
-                                    "[Notifications Manager] Message received for currently displayed chat room, do not make a notification");
-                            return;
-                        }
-
-                        if (message.getErrorInfo() != null
-                                && message.getErrorInfo().getReason()
-                                        == Reason.UnsupportedContent) {
-                            Log.w(
-                                    "[Notifications Manager] Message received but content is unsupported, do not notify it");
-                            return;
-                        }
-
-                        if (!message.hasTextContent()
-                                && message.getFileTransferInformation() == null) {
-                            Log.w(
-                                    "[Notifications Manager] Message has no text or file transfer information to display, ignoring it...");
-                            return;
-                        }
-
-                        final Address from = message.getFromAddress();
-                        final LinphoneContact contact =
-                                ContactsManager.getInstance().findContactFromAddress(from);
-                        final String textMessage =
-                                (message.hasTextContent())
-                                        ? message.getTextContent()
-                                        : mContext.getString(
-                                                R.string.content_description_incoming_file);
-
-                        String file = null;
-                        for (Content c : message.getContents()) {
-                            if (c.isFile()) {
-                                file = c.getFilePath();
-                                LinphoneManager.getInstance()
-                                        .getMediaScanner()
-                                        .scanFile(
-                                                new File(file),
-                                                new MediaScannerListener() {
-                                                    @Override
-                                                    public void onMediaScanned(
-                                                            String path, Uri uri) {
-                                                        createNotification(
-                                                                cr,
-                                                                contact,
-                                                                from,
-                                                                textMessage,
-                                                                message.getTime(),
-                                                                uri,
-                                                                FileUtils.getMimeFromFile(path));
-                                                    }
-                                                });
-                                break;
-                            }
-                        }
-
-                        if (file == null) {
-                            createNotification(
-                                    cr, contact, from, textMessage, message.getTime(), null, null);
-                        }
-
-                        if (cr.hasCapability(ChatRoomCapabilities.OneToOne.toInt())) {
-                            Compatibility.createChatShortcuts(mContext);
-                        }
-                    }
-                };
-
-        mMessageListener =
-                new ChatMessageListenerStub() {
-                    @Override
-                    public void onMsgStateChanged(ChatMessage msg, ChatMessage.State state) {
-                        if (msg.getUserData() == null) return;
-                        int notifId = (int) msg.getUserData();
-                        Log.i(
-                                "[Notifications Manager] Reply message state changed ("
-                                        + state.name()
-                                        + ") for notif id "
-                                        + notifId);
-
-                        if (state != ChatMessage.State.InProgress) {
-                            // There is no need to be called here twice
-                            msg.removeListener(this);
-                        }
-
-                        if (state == ChatMessage.State.Delivered
-                                || state == ChatMessage.State.Displayed) {
-                            Notifiable notif =
-                                    mChatNotifMap.get(
-                                            msg.getChatRoom().getPeerAddress().asStringUriOnly());
-                            if (notif == null) {
-                                Log.e(
-                                        "[Notifications Manager] Couldn't find message notification for SIP URI "
-                                                + msg.getChatRoom()
-                                                        .getPeerAddress()
-                                                        .asStringUriOnly());
-                                dismissNotification(notifId);
-                                return;
-                            } else if (notif.getNotificationId() != notifId) {
-                                Log.w(
-                                        "[Notifications Manager] Notif ID doesn't match: "
-                                                + notifId
-                                                + " != "
-                                                + notif.getNotificationId());
-                            }
-
-                            displayReplyMessageNotification(msg, notif);
-                        } else if (state == ChatMessage.State.NotDelivered) {
-                            Log.e(
-                                    "[Notifications Manager] Couldn't send reply, message is not delivered");
-                            dismissNotification(notifId);
-                        }
-                    }
-                };
+        mListener = new CoreListenerStub() {};
     }
 
     public void onCoreReady() {
@@ -333,17 +186,6 @@ public class NotificationsManager {
         }
     }
 
-    public void setCurrentlyDisplayedChatRoom(String address) {
-        mCurrentChatRoomAddress = address;
-        if (address != null) {
-            resetMessageNotifCount(address);
-        }
-    }
-
-    public void dismissMissedCallNotification() {
-        dismissNotification(MISSED_CALLS_NOTIF_ID);
-    }
-
     public void sendNotification(int id, Notification notif) {
         Log.i("[Notifications Manager] Notifying " + id);
         mNM.notify(id, notif);
@@ -352,18 +194,6 @@ public class NotificationsManager {
     public void dismissNotification(int notifId) {
         Log.i("[Notifications Manager] Dismissing " + notifId);
         mNM.cancel(notifId);
-    }
-
-    public void resetMessageNotifCount(String address) {
-        Notifiable notif = mChatNotifMap.get(address);
-        if (notif != null) {
-            notif.resetMessages();
-            mNM.cancel(notif.getNotificationId());
-        }
-    }
-
-    public ChatMessageListenerStub getMessageListener() {
-        return mMessageListener;
     }
 
     private boolean isServiceNotificationDisplayed() {
@@ -377,170 +207,6 @@ public class NotificationsManager {
             }
         }
         return null;
-    }
-
-    private void displayMessageNotificationFromNotifiable(
-            Notifiable notif, String remoteSipUri, String localSipUri) {
-        Intent notifIntent = new Intent(mContext, ChatActivity.class);
-        notifIntent.putExtra("RemoteSipUri", remoteSipUri);
-        notifIntent.putExtra("LocalSipUri", localSipUri);
-        addFlagsToIntent(notifIntent);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(
-                        mContext,
-                        notif.getNotificationId(),
-                        notifIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotifiableMessage lastNotifiable = notif.getMessages().get(notif.getMessages().size() - 1);
-        String from = lastNotifiable.getSender();
-        String message = lastNotifiable.getMessage();
-        Bitmap bm = lastNotifiable.getSenderBitmap();
-        if (notif.isGroup()) {
-            message =
-                    mContext.getString(R.string.group_chat_notif)
-                            .replace("%1", from)
-                            .replace("%2", message);
-            from = notif.getGroupTitle();
-        }
-
-        Notification notification =
-                Compatibility.createMessageNotification(
-                        mContext, notif, from, message, bm, pendingIntent);
-        sendNotification(notif.getNotificationId(), notification);
-    }
-
-    private void displayReplyMessageNotification(ChatMessage msg, Notifiable notif) {
-        if (msg == null || notif == null) return;
-        Log.i(
-                "[Notifications Manager] Updating message notification with reply for notif "
-                        + notif.getNotificationId());
-
-        NotifiableMessage notifMessage =
-                new NotifiableMessage(
-                        msg.getTextContent(),
-                        notif.getMyself(),
-                        System.currentTimeMillis(),
-                        null,
-                        null);
-        notif.addMessage(notifMessage);
-
-        ChatRoom cr = msg.getChatRoom();
-
-        displayMessageNotificationFromNotifiable(
-                notif,
-                cr.getPeerAddress().asStringUriOnly(),
-                cr.getLocalAddress().asStringUriOnly());
-    }
-
-    public void displayGroupChatMessageNotification(
-            String subject,
-            String conferenceAddress,
-            String fromName,
-            Uri fromPictureUri,
-            String message,
-            Address localIdentity,
-            long timestamp,
-            Uri filePath,
-            String fileMime) {
-
-        Bitmap bm = ImageUtils.getRoundBitmapFromUri(mContext, fromPictureUri);
-        Notifiable notif = mChatNotifMap.get(conferenceAddress);
-        NotifiableMessage notifMessage =
-                new NotifiableMessage(message, fromName, timestamp, filePath, fileMime);
-        if (notif == null) {
-            notif = new Notifiable(mLastNotificationId);
-            mLastNotificationId += 1;
-            mChatNotifMap.put(conferenceAddress, notif);
-        }
-        Log.i("[Notifications Manager] Creating group chat message notifiable " + notif);
-
-        notifMessage.setSenderBitmap(bm);
-        notif.addMessage(notifMessage);
-        notif.setIsGroup(true);
-        notif.setGroupTitle(subject);
-        notif.setMyself(LinphoneUtils.getAddressDisplayName(localIdentity));
-        notif.setLocalIdentity(localIdentity.asString());
-
-        displayMessageNotificationFromNotifiable(
-                notif, conferenceAddress, localIdentity.asStringUriOnly());
-    }
-
-    public void displayMessageNotification(
-            String fromSipUri,
-            String fromName,
-            Uri fromPictureUri,
-            String message,
-            Address localIdentity,
-            long timestamp,
-            Uri filePath,
-            String fileMime) {
-        if (fromName == null) {
-            fromName = fromSipUri;
-        }
-
-        Bitmap bm = ImageUtils.getRoundBitmapFromUri(mContext, fromPictureUri);
-        Notifiable notif = mChatNotifMap.get(fromSipUri);
-        NotifiableMessage notifMessage =
-                new NotifiableMessage(message, fromName, timestamp, filePath, fileMime);
-        if (notif == null) {
-            notif = new Notifiable(mLastNotificationId);
-            mLastNotificationId += 1;
-            mChatNotifMap.put(fromSipUri, notif);
-        }
-        Log.i("[Notifications Manager] Creating chat message notifiable " + notif);
-
-        notifMessage.setSenderBitmap(bm);
-        notif.addMessage(notifMessage);
-        notif.setIsGroup(false);
-        notif.setMyself(LinphoneUtils.getAddressDisplayName(localIdentity));
-        notif.setLocalIdentity(localIdentity.asString());
-
-        displayMessageNotificationFromNotifiable(
-                notif, fromSipUri, localIdentity.asStringUriOnly());
-    }
-
-    public void displayMissedCallNotification(Call call) {
-        Intent missedCallNotifIntent = new Intent(mContext, HistoryActivity.class);
-        addFlagsToIntent(missedCallNotifIntent);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(
-                        mContext,
-                        MISSED_CALLS_NOTIF_ID,
-                        missedCallNotifIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        int missedCallCount = LinphoneManager.getCore().getMissedCallsCount();
-        String body;
-        if (missedCallCount > 1) {
-            body =
-                    mContext.getString(R.string.missed_calls_notif_body)
-                            .replace("%i", String.valueOf(missedCallCount));
-            Log.i("[Notifications Manager] Creating missed calls notification");
-        } else {
-            Address address = call.getRemoteAddress();
-            LinphoneContact c = ContactsManager.getInstance().findContactFromAddress(address);
-            if (c != null) {
-                body = c.getFullName();
-            } else {
-                body = address.getDisplayName();
-                if (body == null) {
-                    body = address.asStringUriOnly();
-                }
-            }
-            Log.i("[Notifications Manager] Creating missed call notification");
-        }
-
-        Notification notif =
-                Compatibility.createMissedCallNotification(
-                        mContext,
-                        mContext.getString(R.string.missed_calls_notif_title),
-                        body,
-                        pendingIntent,
-                        missedCallCount);
-        sendNotification(MISSED_CALLS_NOTIF_ID, notif);
     }
 
     public void displayCallNotification(Call call) {
@@ -697,63 +363,5 @@ public class NotificationsManager {
             }
         }
         return null;
-    }
-
-    private void createNotification(
-            ChatRoom cr,
-            LinphoneContact contact,
-            Address from,
-            String textMessage,
-            long time,
-            Uri file,
-            String mime) {
-        if (cr.hasCapability(ChatRoomCapabilities.OneToOne.toInt())) {
-            if (contact != null) {
-                displayMessageNotification(
-                        cr.getPeerAddress().asStringUriOnly(),
-                        contact.getFullName(),
-                        contact.getThumbnailUri(),
-                        textMessage,
-                        cr.getLocalAddress(),
-                        time,
-                        file,
-                        mime);
-            } else {
-                displayMessageNotification(
-                        cr.getPeerAddress().asStringUriOnly(),
-                        from.getUsername(),
-                        null,
-                        textMessage,
-                        cr.getLocalAddress(),
-                        time,
-                        file,
-                        mime);
-            }
-        } else {
-            String subject = cr.getSubject();
-            if (contact != null) {
-                displayGroupChatMessageNotification(
-                        subject,
-                        cr.getPeerAddress().asStringUriOnly(),
-                        contact.getFullName(),
-                        contact.getThumbnailUri(),
-                        textMessage,
-                        cr.getLocalAddress(),
-                        time,
-                        file,
-                        mime);
-            } else {
-                displayGroupChatMessageNotification(
-                        subject,
-                        cr.getPeerAddress().asStringUriOnly(),
-                        from.getUsername(),
-                        null,
-                        textMessage,
-                        cr.getLocalAddress(),
-                        time,
-                        file,
-                        mime);
-            }
-        }
     }
 }

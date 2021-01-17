@@ -589,7 +589,5 @@ public class ContactsManager extends ContentObserver
         for (ContactsUpdatedListener listener : mContactsUpdatedListeners) {
             listener.onContactsUpdated();
         }
-
-        Compatibility.createChatShortcuts(mContext);
     }
 }

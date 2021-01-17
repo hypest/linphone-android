@@ -84,18 +84,6 @@
     <bool name="disable_all_security_features_for_markets">false </bool>
     <bool name="hide_accounts">false</bool>
 
-    <!-- Chat -->
-    <bool name="disable_chat">false</bool>
-    <bool name="disable_chat_message_notification">false</bool>
-    <bool name="disable_chat_send_file">false</bool>
-    <bool name="lower_space_between_chat_bubbles_if_same_person">true</bool>
-    <bool name="allow_multiple_images_and_text">true</bool>
-    <bool name="send_text_and_images_as_different_messages">false</bool>
-    <bool name="send_multiple_images_as_different_messages">true</bool>
-    <bool name="use_big_pictures_to_preview_images_file_transfers">true</bool>
-    <bool name="show_sip_uri_in_chat">false</bool>
-    <bool name="force_end_to_end_encryption_in_chat">false</bool>
-
     <!-- Shortcuts -->
     <bool name="create_shortcuts">true</bool>
     <!-- The below two settings are mutually exclusive -->
@@ -122,7 +110,6 @@
     <!-- Side Menu -->
     <bool name="hide_assistant_from_side_menu">false</bool>
     <bool name="hide_settings_from_side_menu">false</bool>
-    <bool name="hide_recordings_from_side_menu">false</bool>
     <bool name="disable_accounts_settings_from_side_menu">false</bool>
     <bool name="show_log_out_in_side_menu">false</bool>
 
