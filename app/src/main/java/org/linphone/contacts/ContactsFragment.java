@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
+import org.linphone.activities.MainActivity;
 import org.linphone.call.views.LinphoneLinearLayoutManager;
 import org.linphone.utils.SelectableHelper;
 
@@ -200,7 +201,9 @@ public class ContactsFragment extends Fragment
             mContactAdapter.toggleSelection(position);
         } else {
             mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
-            ((ContactsActivity) getActivity()).showContactDetails(contact);
+            //            ((ContactsActivity) getActivity()).showContactDetails(contact);
+            ((MainActivity) getActivity())
+                    .newOutgoingCall(contact.getNumbersOrAddresses().get(0).getValue());
         }
     }
 
