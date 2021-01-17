@@ -122,7 +122,10 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     }
 
     private CharSequence getMessageText(Intent intent) {
-        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        Bundle remoteInput = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
+            remoteInput = RemoteInput.getResultsFromIntent(intent);
+        }
         if (remoteInput != null) {
             return remoteInput.getCharSequence(Compatibility.KEY_TEXT_REPLY);
         }

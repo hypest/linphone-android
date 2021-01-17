@@ -33,6 +33,7 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -413,9 +414,11 @@ public class AndroidAudioManager {
     }
 
     private void adjustVolume(int i) {
-        if (mAudioManager.isVolumeFixed()) {
-            Log.e("[Audio Manager] Can't adjust volume, device has it fixed...");
-            // Keep going just in case...
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mAudioManager.isVolumeFixed()) {
+                Log.e("[Audio Manager] Can't adjust volume, device has it fixed...");
+                // Keep going just in case...
+            }
         }
 
         int stream = STREAM_VOICE_CALL;

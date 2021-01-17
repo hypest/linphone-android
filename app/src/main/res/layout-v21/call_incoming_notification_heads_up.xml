@@ -13,20 +13,20 @@
             android:id="@+id/caller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/notif_title"/>
+            style="@android:style/TextAppearance.Material.Notification.Title"/>
 
         <TextView
             android:id="@+id/sip_uri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_color"
-            style="@style/notif_line2"/>
+            style="@android:style/TextAppearance.Material.Notification.Line2"/>
 
         <TextView
             android:id="@+id/incoming_call_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/notif_info"/>
+            style="@android:style/TextAppearance.Material.Notification.Info"/>
 
     </LinearLayout>
 

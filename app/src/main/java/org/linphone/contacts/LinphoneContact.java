@@ -540,16 +540,19 @@ public class LinphoneContact extends AndroidContact
     private synchronized void syncValuesFromAndroidContact(Context context) {
         Cursor c = null;
         try {
+            String selection =
+                    (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
+                                    ? ContactsContract.Data.IN_DEFAULT_DIRECTORY + " == 1 AND "
+                                    : "")
+                            + ContactsContract.Data.CONTACT_ID
+                            + " == "
+                            + mAndroidId;
             c =
                     context.getContentResolver()
                             .query(
                                     ContactsContract.Data.CONTENT_URI,
                                     AsyncContactsLoader.PROJECTION,
-                                    ContactsContract.Data.IN_DEFAULT_DIRECTORY
-                                            + " == 1 AND "
-                                            + ContactsContract.Data.CONTACT_ID
-                                            + " == "
-                                            + mAndroidId,
+                                    selection,
                                     null,
                                     null);
         } catch (SecurityException se) {

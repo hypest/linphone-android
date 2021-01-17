@@ -78,8 +78,10 @@ public class Compatibility {
             Context context, String title, String text, PendingIntent intent) {
         if (Version.sdkAboveOrEqual(Version.API26_O_80)) {
             return ApiTwentySixPlus.createSimpleNotification(context, title, text, intent);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            return ApiTwentyOnePlus.createSimpleNotification(context, title, text, intent);
         }
-        return ApiTwentyOnePlus.createSimpleNotification(context, title, text, intent);
+        return ApiNineteenPlus.createSimpleNotification(context, title, text, intent);
     }
 
     public static Notification createMessageNotification(
@@ -96,8 +98,11 @@ public class Compatibility {
             return ApiTwentySixPlus.createMessageNotification(context, notif, contactIcon, intent);
         } else if (Version.sdkAboveOrEqual(Version.API24_NOUGAT_70)) {
             return ApiTwentyFourPlus.createMessageNotification(context, notif, contactIcon, intent);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            return ApiTwentyOnePlus.createMessageNotification(
+                    context, notif.getMessages().size(), msgSender, msg, contactIcon, intent);
         }
-        return ApiTwentyOnePlus.createMessageNotification(
+        return ApiNineteenPlus.createMessageNotification(
                 context, notif.getMessages().size(), msgSender, msg, contactIcon, intent);
     }
 
@@ -115,8 +120,11 @@ public class Compatibility {
         if (Version.sdkAboveOrEqual(Version.API26_O_80)) {
             return ApiTwentySixPlus.createMissedCallNotification(
                     context, title, text, intent, count);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            return ApiTwentyOnePlus.createMissedCallNotification(
+                    context, title, text, intent, count);
         }
-        return ApiTwentyOnePlus.createMissedCallNotification(context, title, text, intent, count);
+        return ApiNineteenPlus.createMissedCallNotification(context, title, text, intent, count);
     }
 
     public static Notification createInCallNotification(
@@ -133,8 +141,11 @@ public class Compatibility {
         } else if (Version.sdkAboveOrEqual(Version.API24_NOUGAT_70)) {
             return ApiTwentyFourPlus.createInCallNotification(
                     context, callId, msg, iconID, contactIcon, contactName, intent);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            return ApiTwentyOnePlus.createInCallNotification(
+                    context, msg, iconID, contactIcon, contactName, intent);
         }
-        return ApiTwentyOnePlus.createInCallNotification(
+        return ApiNineteenPlus.createInCallNotification(
                 context, msg, iconID, contactIcon, contactName, intent);
     }
 
@@ -151,8 +162,11 @@ public class Compatibility {
         } else if (Version.sdkAboveOrEqual(Version.API24_NOUGAT_70)) {
             return ApiTwentyFourPlus.createIncomingCallNotification(
                     context, callId, contactIcon, contactName, sipUri, intent);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            return ApiTwentyOnePlus.createIncomingCallNotification(
+                    context, contactIcon, contactName, sipUri, intent);
         }
-        return ApiTwentyOnePlus.createIncomingCallNotification(
+        return ApiNineteenPlus.createIncomingCallNotification(
                 context, contactIcon, contactName, sipUri, intent);
     }
 
@@ -169,8 +183,11 @@ public class Compatibility {
         if (Version.sdkAboveOrEqual(Version.API26_O_80)) {
             return ApiTwentySixPlus.createNotification(
                     context, title, message, icon, iconLevel, largeIcon, intent, priority, ongoing);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            return ApiTwentyOnePlus.createNotification(
+                    context, title, message, icon, iconLevel, largeIcon, intent, priority, ongoing);
         }
-        return ApiTwentyOnePlus.createNotification(
+        return ApiNineteenPlus.createNotification(
                 context, title, message, icon, iconLevel, largeIcon, intent, priority, ongoing);
     }
 
@@ -199,6 +216,8 @@ public class Compatibility {
     public static void closeContentProviderClient(ContentProviderClient client) {
         if (Version.sdkAboveOrEqual(Version.API24_NOUGAT_70)) {
             ApiTwentyFourPlus.closeContentProviderClient(client);
+        } else if (Version.sdkAboveOrEqual(Version.API21_LOLLIPOP_50)) {
+            ApiTwentyOnePlus.closeContentProviderClient(client);
         } else {
             ApiTwentyOnePlus.closeContentProviderClient(client);
         }

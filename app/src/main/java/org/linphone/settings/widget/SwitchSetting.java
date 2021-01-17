@@ -20,6 +20,7 @@
 package org.linphone.settings.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,8 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import org.linphone.R;
 
 public class SwitchSetting extends BasicSetting {
@@ -44,6 +47,7 @@ public class SwitchSetting extends BasicSetting {
         super(context, attrs, defStyleAttr);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public SwitchSetting(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
