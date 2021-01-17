@@ -67,64 +67,6 @@
                 android:orientation="horizontal" />
 
             <LinearLayout
-                android:baselineAligned="false"
-                android:id="@+id/footer"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:id="@+id/contacts"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/footer_button">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:contentDescription="@string/content_description_contacts"
-                        android:padding="15dp"
-                        android:src="@drawable/footer_contacts" />
-
-                    <View
-                        android:id="@+id/contacts_select"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="?attr/accentColor"
-                        android:visibility="gone" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/dialer"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/footer_button">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:contentDescription="@string/content_description_dialer"
-                        android:padding="15dp"
-                        android:src="@drawable/footer_dialer" />
-
-                    <View
-                        android:id="@+id/dialer_select"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="?attr/accentColor" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/fragmentContainer2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

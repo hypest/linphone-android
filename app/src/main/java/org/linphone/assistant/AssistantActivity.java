@@ -32,13 +32,13 @@ import org.linphone.LinphoneContext;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.activities.LinphoneGenericActivity;
+import org.linphone.contacts.ContactsActivity;
 import org.linphone.core.AccountCreator;
 import org.linphone.core.Core;
 import org.linphone.core.DialPlan;
 import org.linphone.core.Factory;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.tools.Log;
-import org.linphone.dialer.DialerActivity;
 import org.linphone.settings.LinphonePreferences;
 
 public abstract class AssistantActivity extends LinphoneGenericActivity
@@ -206,7 +206,7 @@ public abstract class AssistantActivity extends LinphoneGenericActivity
             if (openH264 && abiSupported && androidVersionOk && !codecFound) {
                 intent = new Intent(this, OpenH264DownloadAssistantActivity.class);
             } else {*/
-            intent = new Intent(this, DialerActivity.class);
+            intent = new Intent(this, ContactsActivity.class);
             intent.addFlags(
                     Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             // }

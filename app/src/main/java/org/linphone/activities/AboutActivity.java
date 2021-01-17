@@ -160,9 +160,6 @@ public class AboutActivity extends MainActivity {
         super.onResume();
 
         showTopBarWithTitle(getString(R.string.about));
-        if (getResources().getBoolean(R.bool.hide_bottom_bar_on_second_level_views)) {
-            hideTabBar();
-        }
 
         Core core = LinphoneManager.getCore();
         if (core != null) {

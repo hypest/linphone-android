@@ -78,8 +78,6 @@ public class SettingsActivity extends MainActivity {
     protected void onResume() {
         super.onResume();
 
-        hideTabBar();
-
         int count = getFragmentManager().getBackStackEntryCount();
         if (count == 0) {
             showTopBarWithTitle(getString(R.string.settings));

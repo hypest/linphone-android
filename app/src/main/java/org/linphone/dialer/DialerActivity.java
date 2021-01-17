@@ -191,8 +191,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
     protected void onResume() {
         super.onResume();
 
-        mDialerSelected.setVisibility(View.VISIBLE);
-
         Core core = LinphoneManager.getCore();
         if (core != null) {
             core.addListener(mListener);

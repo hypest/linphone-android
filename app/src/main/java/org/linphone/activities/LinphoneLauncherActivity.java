@@ -84,7 +84,7 @@ public class LinphoneLauncherActivity extends Activity implements ServiceWaitThr
                     classToStart = DialerActivity.class;
                 }
             } else {
-                classToStart = DialerActivity.class;
+                classToStart = ContactsActivity.class;
             }
         }
 

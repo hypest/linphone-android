@@ -77,11 +77,8 @@ public abstract class MainActivity extends LinphoneGenericActivity
     private static final int MAIN_PERMISSIONS = 1;
     protected static final int FRAGMENT_SPECIFIC_PERMISSION = 2;
 
-    protected View mContactsSelected;
-    protected View mDialerSelected;
     private LinearLayout mTopBar;
     private TextView mTopBarTitle;
-    private LinearLayout mTabBar;
 
     private SideMenuFragment mSideMenuFragment;
     private StatusBarFragment mStatusBarFragment;
@@ -101,31 +98,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
         mOnBackPressGoHome = true;
         mAlwaysHideTabBar = false;
 
-        RelativeLayout contacts = findViewById(R.id.contacts);
-        contacts.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, ContactsActivity.class);
-                        addFlagsToIntent(intent);
-                        startActivity(intent);
-                    }
-                });
-        RelativeLayout dialer = findViewById(R.id.dialer);
-        dialer.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, DialerActivity.class);
-                        addFlagsToIntent(intent);
-                        startActivity(intent);
-                    }
-                });
-
-        mContactsSelected = findViewById(R.id.contacts_select);
-        mDialerSelected = findViewById(R.id.dialer_select);
-
-        mTabBar = findViewById(R.id.footer);
         mTopBar = findViewById(R.id.top_bar);
         mTopBarTitle = findViewById(R.id.top_bar_title);
 
@@ -234,15 +206,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
                 .removeForegroundServiceNotificationIfPossible();
 
         hideTopBar();
-        if (!mAlwaysHideTabBar
-                && (getFragmentManager().getBackStackEntryCount() == 0
-                        || !getResources()
-                                .getBoolean(R.bool.hide_bottom_bar_on_second_level_views))) {
-            showTabBar();
-        }
-
-        mContactsSelected.setVisibility(View.GONE);
-        mDialerSelected.setVisibility(View.GONE);
 
         mStatusBarFragment.setMenuListener(this);
         mSideMenuFragment.setQuitListener(this);
@@ -274,11 +237,8 @@ public abstract class MainActivity extends LinphoneGenericActivity
 
     @Override
     protected void onDestroy() {
-        mContactsSelected = null;
-        mDialerSelected = null;
         mTopBar = null;
         mTopBarTitle = null;
-        mTabBar = null;
 
         mSideMenuFragment = null;
         mStatusBarFragment = null;
@@ -338,12 +298,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
     public boolean popBackStack() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStackImmediate();
-            if (!mAlwaysHideTabBar
-                    && (getFragmentManager().getBackStackEntryCount() == 0
-                            && getResources()
-                                    .getBoolean(R.bool.hide_bottom_bar_on_second_level_views))) {
-                showTabBar();
-            }
             return true;
         }
         return false;
@@ -384,16 +338,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
 
     public void showStatusBar() {
         findViewById(R.id.status_fragment).setVisibility(View.VISIBLE);
-    }
-
-    public void hideTabBar() {
-        if (!isTablet()) { // do not hide if tablet, otherwise won't be able to navigate...
-            mTabBar.setVisibility(View.GONE);
-        }
-    }
-
-    public void showTabBar() {
-        mTabBar.setVisibility(View.VISIBLE);
     }
 
     protected void hideTopBar() {
@@ -592,16 +536,6 @@ public abstract class MainActivity extends LinphoneGenericActivity
 
             if (isChild) {
                 transaction.addToBackStack(name);
-            }
-        }
-
-        if (getResources().getBoolean(R.bool.hide_bottom_bar_on_second_level_views)) {
-            if (isChild) {
-                if (!isTablet()) {
-                    hideTabBar();
-                }
-            } else {
-                showTabBar();
             }
         }
 
