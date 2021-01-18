@@ -84,7 +84,8 @@ public class ContactsAdapter extends SelectableAdapter<ContactViewHolder>
                                         != position)
                         ? View.GONE
                         : View.VISIBLE);
-        holder.linphoneFriend.setVisibility(contact.isInFriendList() ? View.VISIBLE : View.GONE);
+        //        holder.linphoneFriend.setVisibility(contact.isInFriendList() ? View.VISIBLE :
+        // View.GONE);
 
         ContactAvatar.displayAvatar(contact, holder.avatarLayout);
 

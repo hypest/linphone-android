@@ -26,21 +26,45 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <include layout="@layout/contact_avatar_100" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/big_contact_name_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center" />
+
+        <org.linphone.views.MarqueeTextView
+            android:id="@+id/contactOrganization"
+            style="@style/contact_organization_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="5dp"
         android:gravity="center_vertical">
-
-        <RelativeLayout
-            android:id="@+id/avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <include layout="@layout/contact_avatar" />
-
-        </RelativeLayout>
 
         <CheckBox
             android:id="@+id/delete"
@@ -78,32 +102,6 @@
             android:scaleType="centerInside"
             android:src="@drawable/linphone_user"
             android:visibility="gone" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/friendLinphone"
-            android:layout_toRightOf="@id/avatar">
-
-            <org.linphone.views.MarqueeTextView
-                android:id="@+id/name"
-                style="@style/contact_name_list_cell_font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:singleLine="true" />
-
-            <org.linphone.views.MarqueeTextView
-                android:id="@+id/contactOrganization"
-                style="@style/contact_organization_font"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:singleLine="true" />
-
-        </RelativeLayout>
 
     </RelativeLayout>
 
