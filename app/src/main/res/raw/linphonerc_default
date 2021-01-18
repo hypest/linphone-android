@@ -13,13 +13,22 @@ media_encryption=none
 download_bw=0
 upload_bw=0
 
+[audio]
+codec_bitrate_limit=128
+
 [video]
-size=vga
+enabled=1
+display=1
+automatically_accept=1
+automatically_initiate=1
+size=720p
+preset=high-fps
 
 [app]
 tunnel=disabled
 push_notification=1
 auto_start=1
+show_service_notification=1
 
 [tunnel]
 host=
