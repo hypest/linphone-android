@@ -29,7 +29,6 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 import org.linphone.R;
 
 public class TextSetting extends BasicSetting {

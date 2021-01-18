@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 import org.linphone.R;
 
 public class LedSetting extends BasicSetting {

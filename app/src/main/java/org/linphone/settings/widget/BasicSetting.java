@@ -30,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 import org.linphone.R;
 
 public class BasicSetting extends LinearLayout {

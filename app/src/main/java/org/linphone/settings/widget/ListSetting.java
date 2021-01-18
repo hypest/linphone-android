@@ -30,7 +30,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.linphone.R;
