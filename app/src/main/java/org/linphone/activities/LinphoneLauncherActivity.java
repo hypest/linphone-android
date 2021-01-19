@@ -28,7 +28,6 @@ import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.assistant.MenuAssistantActivity;
 import org.linphone.contacts.ContactsActivity;
-import org.linphone.dialer.DialerActivity;
 import org.linphone.service.LinphoneService;
 import org.linphone.service.ServiceWaitThread;
 import org.linphone.service.ServiceWaitThreadListener;
@@ -73,20 +72,10 @@ public class LinphoneLauncherActivity extends Activity implements ServiceWaitThr
 
         boolean useFirstLoginActivity =
                 getResources().getBoolean(R.bool.display_account_assistant_at_first_start);
-        if (useFirstLoginActivity && LinphonePreferences.instance().isFirstLaunch()) {
-            classToStart = MenuAssistantActivity.class;
-        } else {
-            if (getIntent().getExtras() != null) {
-                String activity = getIntent().getExtras().getString("Activity", null);
-                if (ContactsActivity.NAME.equals(activity)) {
-                    classToStart = ContactsActivity.class;
-                } else {
-                    classToStart = DialerActivity.class;
-                }
-            } else {
-                classToStart = ContactsActivity.class;
-            }
-        }
+        classToStart =
+                (useFirstLoginActivity && LinphonePreferences.instance().isFirstLaunch())
+                        ? MenuAssistantActivity.class
+                        : ContactsActivity.class;
 
         Intent intent = new Intent();
         intent.setClass(LinphoneLauncherActivity.this, classToStart);
