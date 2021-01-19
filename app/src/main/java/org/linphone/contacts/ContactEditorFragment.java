@@ -385,6 +385,10 @@ public class ContactEditorFragment extends Fragment {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
+        // After editing and keyboard was used, the Android status and nav bar stay there so,
+        //  go to full screen again before exiting
+        ((ContactsActivity) getActivity()).makeFullscreen();
+
         super.onPause();
     }
 
