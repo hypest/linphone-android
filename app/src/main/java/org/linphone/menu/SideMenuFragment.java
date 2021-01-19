@@ -42,6 +42,7 @@ import org.linphone.R;
 import org.linphone.activities.AboutActivity;
 import org.linphone.activities.MainActivity;
 import org.linphone.assistant.MenuAssistantActivity;
+import org.linphone.contacts.ContactsActivity;
 import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
@@ -89,6 +90,15 @@ public class SideMenuFragment extends Fragment {
                     new SideMenuItem(
                             getResources().getString(R.string.inapp), R.drawable.menu_options));
         }
+        if (getActivity()
+                .getClass()
+                .getSimpleName()
+                .equals(ContactsActivity.class.getSimpleName())) {
+            sideMenuItems.add(
+                    new SideMenuItem(
+                            getResources().getString(R.string.menu_contact_new),
+                            R.drawable.contact_add));
+        }
         sideMenuItems.add(
                 new SideMenuItem(
                         getResources().getString(R.string.menu_about), R.drawable.menu_about));
@@ -116,6 +126,9 @@ public class SideMenuFragment extends Fragment {
                             }
                         } else if (selectedItem.equals(getString(R.string.menu_settings))) {
                             startActivity(new Intent(getActivity(), SettingsActivity.class));
+                        } else if (selectedItem.equals(getString(R.string.menu_contact_new))) {
+                            ((ContactsActivity) getActivity()).showContactEdit(null);
+                            closeDrawer();
                         } else if (selectedItem.equals(getString(R.string.menu_about))) {
                             startActivity(new Intent(getActivity(), AboutActivity.class));
                         } else if (selectedItem.equals(getString(R.string.menu_assistant))) {
