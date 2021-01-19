@@ -100,7 +100,7 @@
     <bool name="display_contact_organization">true</bool>
     <bool name="hide_numbers_and_addresses_without_presence">false</bool>
     <bool name="hide_sip_contacts_without_presence">false</bool>
-    <bool name="hide_non_linphone_contacts">false</bool>
+    <bool name="hide_non_linphone_contacts">true</bool>
     <bool name="hide_invite_contact">false</bool>
     <bool name="generate_text_avatar">true</bool>
     <bool name="only_show_address_username_if_matches_default_domain">true</bool>
