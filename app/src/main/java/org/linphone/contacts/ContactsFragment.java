@@ -209,10 +209,13 @@ public class ContactsFragment extends Fragment
 
     @Override
     public boolean onItemLongClicked(int position) {
-        if (!mContactAdapter.isEditionEnabled()) {
-            mSelectionHelper.enterEditionMode();
-        }
-        mContactAdapter.toggleSelection(position);
+        LinphoneContact contact = (LinphoneContact) mContactAdapter.getItem(position);
+        mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
+        ((ContactsActivity) getActivity()).showContactEdit(contact);
+        //        if (!mContactAdapter.isEditionEnabled()) {
+        //            mSelectionHelper.enterEditionMode();
+        //        }
+        //        mContactAdapter.toggleSelection(position);
         return true;
     }
 
