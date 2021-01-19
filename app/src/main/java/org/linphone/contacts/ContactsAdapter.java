@@ -72,18 +72,18 @@ public class ContactsAdapter extends SelectableAdapter<ContactViewHolder>
 
         holder.name.setText(contact.getFullName());
 
-        if (!mIsSearchMode) {
-            String fullName = contact.getFullName();
-            if (fullName != null && !fullName.isEmpty()) {
-                holder.separatorText.setText(String.valueOf(fullName.charAt(0)));
-            }
-        }
-        holder.separator.setVisibility(
-                mIsSearchMode
-                                || (getPositionForSection(getSectionForPosition(position))
-                                        != position)
-                        ? View.GONE
-                        : View.VISIBLE);
+        //        if (!mIsSearchMode) {
+        //            String fullName = contact.getFullName();
+        //            if (fullName != null && !fullName.isEmpty()) {
+        //                holder.separatorText.setText(String.valueOf(fullName.charAt(0)));
+        //            }
+        //        }
+        //        holder.separator.setVisibility(
+        //                mIsSearchMode
+        //                                || (getPositionForSection(getSectionForPosition(position))
+        //                                        != position)
+        //                        ? View.GONE
+        //                        : View.VISIBLE);
         //        holder.linphoneFriend.setVisibility(contact.isInFriendList() ? View.VISIBLE :
         // View.GONE);
 
