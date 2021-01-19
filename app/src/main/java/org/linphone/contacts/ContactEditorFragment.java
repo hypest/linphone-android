@@ -202,9 +202,6 @@ public class ContactEditorFragment extends Fragment {
                         }
 
                         getFragmentManager().popBackStack();
-                        if (mIsNewContact || getResources().getBoolean(R.bool.isTablet)) {
-                            ((ContactsActivity) getActivity()).showContactDetails(mContact);
-                        }
                     }
                 });
 
@@ -286,7 +283,7 @@ public class ContactEditorFragment extends Fragment {
                                         @Override
                                         public void onClick(View view) {
                                             mContact.delete();
-                                            ((ContactsActivity) getActivity()).goBack();
+                                            getFragmentManager().popBackStack();
                                             dialog.dismiss();
                                         }
                                     });
