@@ -65,6 +65,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_margin="20dp"
                         android:contentDescription="@string/content_description_pause"
+                        android:visibility="gone"
                         android:src="@drawable/pause" />
 
                     <ImageView
@@ -133,6 +134,7 @@
                     android:id="@+id/call_secondary_buttons"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:layout_above="@id/call_primary_buttons" />
 
             </RelativeLayout>
