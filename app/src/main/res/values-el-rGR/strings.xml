@@ -24,4 +24,12 @@
     <string name="status_in_progress">Συνδεση σε εξέλιξη</string>
     <string name="status_error">Αποτυχία σύνδεσης</string>
     <string name="voicemail_unread"> αδιάβαστα μηνύματα</string>
+
+    <!-- Side Menu -->
+    <string name="menu_logout">Αποσύνδεση</string>
+    <string name="menu_assistant">Βοηθός σύνδεσης</string>
+    <string name="menu_settings">Ρυθμίσεις</string>
+    <string name="menu_contact_new">Νέα επαφή</string>
+    <string name="menu_about">Περί</string>
+    <string name="quit">Έξοδος</string>
 </resources>
