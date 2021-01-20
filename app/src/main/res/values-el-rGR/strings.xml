@@ -17,4 +17,11 @@
     <string name="incoming">Εισερχόμενη</string>
     <string name="outgoing_call">Εξερχόμενη κλήση</string>
     <string name="incoming_call">Εισερχόμενη κλήση</string>
+
+    <!-- Status Bar -->
+    <string name="status_connected">Συνδεδεμένος</string>
+    <string name="status_not_connected">Αποσυνδεδεμένος</string>
+    <string name="status_in_progress">Συνδεση σε εξέλιξη</string>
+    <string name="status_error">Αποτυχία σύνδεσης</string>
+    <string name="voicemail_unread"> αδιάβαστα μηνύματα</string>
 </resources>
