@@ -75,7 +75,7 @@ public class CallActivity extends LinphoneGenericActivity
         implements CallStatusBarFragment.StatsClikedListener,
                 ContactsUpdatedListener,
                 CallActivityInterface {
-    private static final int SECONDS_BEFORE_HIDING_CONTROLS = 4000;
+    private static final int SECONDS_BEFORE_HIDING_CONTROLS = 15000;
     private static final int SECONDS_BEFORE_DENYING_CALL_UPDATE = 30000;
 
     private static final int CAMERA_TO_TOGGLE_VIDEO = 0;
