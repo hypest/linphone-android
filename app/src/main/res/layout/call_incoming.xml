@@ -44,7 +44,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical|center_horizontal"
-            android:paddingTop="5dp" />
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
 
         <org.linphone.views.MarqueeTextView
             android:id="@+id/contact_number"
@@ -55,6 +56,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical|center_horizontal"
             android:singleLine="true"
+            android:visibility="gone"
             android:paddingBottom="10dp" />
 
         <RelativeLayout
