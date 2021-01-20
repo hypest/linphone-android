@@ -13,6 +13,7 @@
     <string name="about_version">Linphone Android %s</string>
     <string name="about_liblinphone_version">Linphone Core %s</string>
     <string name="about_liblinphone_sdk_version">Linphone SDK %s</string>
+    <string name="about_hypest_version">Hypest modifications %s</string>
     <string name="about_privacy_policy">Visit our privacy policy</string>
     <string name="sync_account_name">linphone contacts</string>
 
@@ -68,6 +69,7 @@
 
     <!-- Launch screen -->
     <string name="app_description">the <i>libre</i> SIP client</string>
+    <string name="app_description_modifications">Simplified by hypest.org to become a videophone</string>
 
     <!-- Assistant -->
     <string name="welcome">Welcome</string>
@@ -338,6 +340,7 @@
     <!-- About -->
     <string name="menu_send_log">Send log</string>
     <string name="menu_reset_log">Reset log</string>
+    <string name="about_based_on">Based on:</string>
 
     <!-- Service -->
     <string name="incall_notif_active">Audio call ongoing</string>

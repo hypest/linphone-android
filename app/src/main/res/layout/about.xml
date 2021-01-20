@@ -32,6 +32,14 @@
                 android:text="@string/app_description" />
 
             <TextView
+                android:textSize="13sp"
+                android:textColor="?accentColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/app_description_modifications" />
+
+            <TextView
                 android:id="@+id/about_android_version"
                 style="@style/about_version_font"
                 android:layout_width="wrap_content"
@@ -52,6 +60,16 @@
                 android:textColorLink="?attr/secondaryTextColor"
                 android:text="@string/about_liblinphone_sdk_version" />
 
+            <TextView
+                android:id="@+id/about_hypest_version"
+                style="@style/about_version_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColorLink="?attr/secondaryTextColor"
+                android:text="@string/about_hypest_version" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -63,6 +81,29 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/about_hypest_link"
+                style="@style/link_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:autoLink="web"
+                android:gravity="center"
+                android:text="@string/about_hypest_org_link"
+                android:textColorLink="@color/primary_color" />
+
+            <TextView
+                android:id="@+id/based_on"
+                style="@style/about_license_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:autoLink="web"
+                android:paddingTop="10dp"
+                android:gravity="center"
+                android:text="@string/about_based_on"
+                android:textColorLink="@color/primary_color" />
+
+            <TextView
                 android:id="@+id/about_link"
                 style="@style/link_font"
                 android:layout_width="wrap_content"
@@ -70,7 +111,6 @@
                 android:layout_gravity="center"
                 android:autoLink="web"
                 android:gravity="center"
-                android:paddingTop="20dp"
                 android:text="@string/about_link"
                 android:textColorLink="@color/primary_color" />
 
