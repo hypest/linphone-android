@@ -31,8 +31,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ import java.util.List;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.activities.MainActivity;
-import org.linphone.call.views.LinphoneLinearLayoutManager;
 import org.linphone.utils.SelectableHelper;
 
 public class ContactsFragment extends Fragment
@@ -57,7 +55,7 @@ public class ContactsFragment extends Fragment
     private int mLastKnownPosition;
     private SearchView mSearchView;
     private ProgressBar mContactsFetchInProgress;
-    private LinearLayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
     private Context mContext;
     private SelectableHelper mSelectionHelper;
     private ContactsAdapter mContactAdapter;
@@ -168,15 +166,15 @@ public class ContactsFragment extends Fragment
                     }
                 });
 
-        mLayoutManager = new LinphoneLinearLayoutManager(mContext);
+        mLayoutManager = new GridLayoutManager(mContext, 2);
         mContactsList.setLayoutManager(mLayoutManager);
 
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(
-                        mContactsList.getContext(), mLayoutManager.getOrientation());
-        dividerItemDecoration.setDrawable(
-                getActivity().getResources().getDrawable(R.drawable.divider));
-        mContactsList.addItemDecoration(dividerItemDecoration);
+        //        DividerItemDecoration dividerItemDecoration =
+        //                new DividerItemDecoration(
+        //                        mContactsList.getContext(), mLayoutManager.getOrientation());
+        //        dividerItemDecoration.setDrawable(
+        //                getActivity().getResources().getDrawable(R.drawable.divider));
+        //        mContactsList.addItemDecoration(dividerItemDecoration);
 
         return view;
     }
