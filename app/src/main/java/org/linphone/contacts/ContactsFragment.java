@@ -191,29 +191,28 @@ public class ContactsFragment extends Fragment
         ((ContactsActivity) getActivity()).showContactDetails(contact);
     }
 
-    @Override
-    public void onItemClicked(int position) {
+    private void newOutgoingCall(int position) {
         LinphoneContact contact = (LinphoneContact) mContactAdapter.getItem(position);
 
+        mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
+        ((MainActivity) getActivity())
+                .newOutgoingCall(contact.getNumbersOrAddresses().get(0).getValue());
+    }
+
+    @Override
+    public void onItemClicked(int position) {
         if (mContactAdapter.isEditionEnabled()) {
-            mContactAdapter.toggleSelection(position);
-        } else {
+            LinphoneContact contact = (LinphoneContact) mContactAdapter.getItem(position);
             mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
-            //            ((ContactsActivity) getActivity()).showContactDetails(contact);
-            ((MainActivity) getActivity())
-                    .newOutgoingCall(contact.getNumbersOrAddresses().get(0).getValue());
+            ((ContactsActivity) getActivity()).showContactEdit(contact);
+        } else {
+            newOutgoingCall(position);
         }
     }
 
     @Override
     public boolean onItemLongClicked(int position) {
-        LinphoneContact contact = (LinphoneContact) mContactAdapter.getItem(position);
-        mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
-        ((ContactsActivity) getActivity()).showContactEdit(contact);
-        //        if (!mContactAdapter.isEditionEnabled()) {
-        //            mSelectionHelper.enterEditionMode();
-        //        }
-        //        mContactAdapter.toggleSelection(position);
+        newOutgoingCall(position);
         return true;
     }
 
@@ -268,6 +267,12 @@ public class ContactsFragment extends Fragment
             }
         }
         ContactsManager.getInstance().deleteMultipleContactsAtOnce(ids);
+    }
+
+    public void enterContactEditMode() {
+        if (!mContactAdapter.isEditionEnabled()) {
+            mSelectionHelper.enterEditionMode();
+        }
     }
 
     private void searchContacts(String search) {

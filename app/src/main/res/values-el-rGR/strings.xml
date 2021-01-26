@@ -30,6 +30,7 @@
     <string name="menu_assistant">Βοηθός σύνδεσης</string>
     <string name="menu_settings">Ρυθμίσεις</string>
     <string name="menu_contact_new">Νέα επαφή</string>
+    <string name="menu_contact_edit">Επεξεργασία επαφών</string>
     <string name="menu_about">Περί</string>
     <string name="quit">Έξοδος</string>
 </resources>

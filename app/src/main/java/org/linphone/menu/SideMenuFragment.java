@@ -98,6 +98,10 @@ public class SideMenuFragment extends Fragment {
                     new SideMenuItem(
                             getResources().getString(R.string.menu_contact_new),
                             R.drawable.contact_add));
+            sideMenuItems.add(
+                    new SideMenuItem(
+                            getResources().getString(R.string.menu_contact_edit),
+                            R.drawable.contact_add));
         }
         sideMenuItems.add(
                 new SideMenuItem(
@@ -128,6 +132,9 @@ public class SideMenuFragment extends Fragment {
                             startActivity(new Intent(getActivity(), SettingsActivity.class));
                         } else if (selectedItem.equals(getString(R.string.menu_contact_new))) {
                             ((ContactsActivity) getActivity()).showContactEdit(null);
+                            closeDrawer();
+                        } else if (selectedItem.equals(getString(R.string.menu_contact_edit))) {
+                            ((ContactsActivity) getActivity()).enterContactEditMode();
                             closeDrawer();
                         } else if (selectedItem.equals(getString(R.string.menu_about))) {
                             startActivity(new Intent(getActivity(), AboutActivity.class));

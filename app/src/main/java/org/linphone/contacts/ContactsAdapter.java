@@ -98,8 +98,8 @@ public class ContactsAdapter extends SelectableAdapter<ContactViewHolder>
             holder.organization.setVisibility(View.GONE);
         }
 
-        holder.delete.setVisibility(isEditionEnabled() ? View.VISIBLE : View.INVISIBLE);
-        holder.delete.setChecked(isSelected(position));
+        //        holder.delete.setVisibility(isEditionEnabled() ? View.VISIBLE : View.INVISIBLE);
+        //        holder.delete.setChecked(isSelected(position));
     }
 
     @Override

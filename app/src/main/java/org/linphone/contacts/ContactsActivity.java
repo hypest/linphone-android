@@ -193,6 +193,13 @@ public class ContactsActivity extends MainActivity {
         showContactEdit(contact, true);
     }
 
+    public void enterContactEditMode() {
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if (currentFragment instanceof ContactsFragment) {
+            ((ContactsFragment) currentFragment).enterContactEditMode();
+        }
+    }
+
     private void showContactsList() {
         ContactsFragment fragment = new ContactsFragment();
         changeFragment(fragment, "Contacts", false);
