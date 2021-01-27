@@ -37,6 +37,7 @@ import org.linphone.call.CallActivity;
 import org.linphone.call.CallIncomingActivity;
 import org.linphone.call.CallOutgoingActivity;
 import org.linphone.compatibility.Compatibility;
+import org.linphone.contacts.ContactsActivity;
 import org.linphone.contacts.ContactsManager;
 import org.linphone.contacts.LinphoneContact;
 import org.linphone.core.Address;
@@ -44,7 +45,6 @@ import org.linphone.core.Call;
 import org.linphone.core.Core;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.tools.Log;
-import org.linphone.dialer.DialerActivity;
 import org.linphone.service.LinphoneService;
 import org.linphone.settings.LinphonePreferences;
 import org.linphone.utils.DeviceUtils;
@@ -96,7 +96,7 @@ public class NotificationsManager {
             Log.e(e);
         }
 
-        Intent notifIntent = new Intent(mContext, DialerActivity.class);
+        Intent notifIntent = new Intent(mContext, ContactsActivity.class);
         notifIntent.putExtra("Notification", true);
         addFlagsToIntent(notifIntent);
 
