@@ -77,10 +77,12 @@
     <LinearLayout
         android:id="@+id/menu"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="150dp"
+        android:layout_marginBottom="100dp">
 
         <ImageView
             android:id="@+id/micro"
@@ -111,7 +113,7 @@
             android:layout_weight="0.7"
             android:background="@drawable/hangup"
             android:contentDescription="@string/content_description_hang_up"
-            android:padding="12dp"
+            android:padding="30dp"
             android:src="@drawable/call_hangup" />
 
     </LinearLayout>
