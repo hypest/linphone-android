@@ -93,15 +93,15 @@ public class CallIncomingActivity extends LinphoneGenericActivity {
                 getResources()
                         .getBoolean(
                                 R.bool.do_not_use_sliders_to_answer_hangup_call_if_phone_unlocked);
-        if (doNotUseSliders && !mKeyguardManager.inKeyguardRestrictedInputMode()) {
-            mAccept.setSliderMode(false);
-            mDecline.setSliderMode(false);
-        } else {
-            mAccept.setSliderMode(true);
-            mDecline.setSliderMode(true);
-            mAccept.setDeclineButton(mDecline);
-            mDecline.setAnswerButton(mAccept);
-        }
+        //        if (doNotUseSliders && !mKeyguardManager.inKeyguardRestrictedInputMode()) {
+        mAccept.setSliderMode(false);
+        mDecline.setSliderMode(false);
+        //        } else {
+        //            mAccept.setSliderMode(true);
+        //            mDecline.setSliderMode(true);
+        //            mAccept.setDeclineButton(mDecline);
+        //            mDecline.setAnswerButton(mAccept);
+        //        }
         mAccept.setListener(
                 new CallIncomingButtonListener() {
                     @Override
