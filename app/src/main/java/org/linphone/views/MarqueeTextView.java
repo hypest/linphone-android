@@ -21,10 +21,12 @@ package org.linphone.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 /**
  * The purpose of this class is to have a Textview automatically configured for marquee ellipsize
@@ -46,6 +48,7 @@ public class MarqueeTextView extends TextView {
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public MarqueeTextView(
             Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);

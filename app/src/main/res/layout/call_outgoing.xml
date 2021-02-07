@@ -46,7 +46,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical|center_horizontal"
-            android:paddingTop="5dp" />
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
 
         <org.linphone.views.MarqueeTextView
             android:id="@+id/contact_number"
@@ -57,6 +58,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical|center_horizontal"
             android:singleLine="true"
+            android:visibility="gone"
             android:paddingBottom="10dp" />
 
         <RelativeLayout
@@ -74,17 +76,20 @@
 
     <LinearLayout
         android:id="@+id/menu"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="150dp"
+        android:layout_marginBottom="60dp">
 
         <ImageView
             android:id="@+id/micro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:background="?attr/button_background_drawable"
             android:contentDescription="@string/content_description_toggle_micro"
             android:padding="10dp"
@@ -95,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:background="?attr/button_background_drawable"
             android:contentDescription="@string/content_description_toggle_speaker"
             android:padding="15dp"
@@ -102,12 +108,11 @@
 
         <ImageView
             android:id="@+id/outgoing_hang_up"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
             android:background="@drawable/hangup"
             android:contentDescription="@string/content_description_hang_up"
-            android:padding="12dp"
+            android:padding="30dp"
             android:src="@drawable/call_hangup" />
 
     </LinearLayout>

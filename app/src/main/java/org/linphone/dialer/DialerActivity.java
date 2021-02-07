@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -191,8 +190,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
     protected void onResume() {
         super.onResume();
 
-        mDialerSelected.setVisibility(View.VISIBLE);
-
         Core core = LinphoneManager.getCore();
         if (core != null) {
             core.addListener(mListener);
@@ -302,33 +299,34 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
     }
 
     private void enableVideoPreviewIfTablet(boolean enable) {
-        Core core = LinphoneManager.getCore();
-        TextureView preview = findViewById(R.id.video_preview);
-        ImageView changeCamera = findViewById(R.id.video_preview_change_camera);
-
-        if (preview != null && changeCamera != null && core != null) {
-            if (enable && isTablet() && LinphonePreferences.instance().isVideoPreviewEnabled()) {
-                preview.setVisibility(View.VISIBLE);
-                core.setNativePreviewWindowId(preview);
-                core.enableVideoPreview(true);
-
-                if (core.getVideoDevicesList().length > 1) {
-                    changeCamera.setVisibility(View.VISIBLE);
-                    changeCamera.setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    LinphoneManager.getCallManager().switchCamera();
-                                }
-                            });
-                }
-            } else {
-                preview.setVisibility(View.GONE);
-                changeCamera.setVisibility(View.GONE);
-                core.setNativePreviewWindowId(null);
-                core.enableVideoPreview(false);
-            }
-        }
+        //        Core core = LinphoneManager.getCore();
+        //        TextureView preview = findViewById(R.id.video_preview);
+        //        ImageView changeCamera = findViewById(R.id.video_preview_change_camera);
+        //
+        //        if (preview != null && changeCamera != null && core != null) {
+        //            if (enable && isTablet() &&
+        // LinphonePreferences.instance().isVideoPreviewEnabled()) {
+        //                preview.setVisibility(View.VISIBLE);
+        //                core.setNativePreviewWindowId(preview);
+        //                core.enableVideoPreview(true);
+        //
+        //                if (core.getVideoDevicesList().length > 1) {
+        //                    changeCamera.setVisibility(View.VISIBLE);
+        //                    changeCamera.setOnClickListener(
+        //                            new View.OnClickListener() {
+        //                                @Override
+        //                                public void onClick(View v) {
+        //                                    LinphoneManager.getCallManager().switchCamera();
+        //                                }
+        //                            });
+        //                }
+        //            } else {
+        //                preview.setVisibility(View.GONE);
+        //                changeCamera.setVisibility(View.GONE);
+        //                core.setNativePreviewWindowId(null);
+        //                core.enableVideoPreview(false);
+        //            }
+        //        }
     }
 
     @Override

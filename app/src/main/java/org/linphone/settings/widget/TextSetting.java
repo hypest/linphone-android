@@ -21,12 +21,14 @@ package org.linphone.settings.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import org.linphone.R;
 
 public class TextSetting extends BasicSetting {
@@ -44,6 +46,7 @@ public class TextSetting extends BasicSetting {
         super(context, attrs, defStyleAttr);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public TextSetting(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

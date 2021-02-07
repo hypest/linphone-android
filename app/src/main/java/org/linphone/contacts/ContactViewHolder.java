@@ -30,6 +30,7 @@ import org.linphone.R;
 
 public class ContactViewHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
+    public final View hitTarget;
     public final CheckBox delete;
     public final ImageView linphoneFriend;
     public final TextView name;
@@ -51,8 +52,9 @@ public class ContactViewHolder extends RecyclerView.ViewHolder
         organization = view.findViewById(R.id.contactOrganization);
         // friendStatus = view.findViewById(R.id.friendStatus);
         mListener = listener;
-        view.setOnClickListener(this);
-        view.setOnLongClickListener(this);
+        hitTarget = view.findViewById(R.id.hit_target);
+        hitTarget.setOnClickListener(this);
+        hitTarget.setOnLongClickListener(this);
     }
 
     @Override

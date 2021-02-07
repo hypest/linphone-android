@@ -65,6 +65,7 @@ public class AboutActivity extends MainActivity {
 
         TextView aboutVersion = findViewById(R.id.about_android_version);
         TextView aboutLiblinphoneVersion = findViewById(R.id.about_liblinphone_sdk_version);
+        TextView aboutHypestVersion = findViewById(R.id.about_hypest_version);
         aboutLiblinphoneVersion.setText(
                 String.format(
                         getString(R.string.about_liblinphone_sdk_version),
@@ -80,6 +81,10 @@ public class AboutActivity extends MainActivity {
                                 + " ("
                                 + org.linphone.BuildConfig.BUILD_TYPE
                                 + ")"));
+        aboutHypestVersion.setText(
+                String.format(
+                        getString(R.string.about_hypest_version),
+                        getString(R.string.hypest_modifications_version)));
 
         TextView privacyPolicy = findViewById(R.id.privacy_policy_link);
         privacyPolicy.setOnClickListener(
@@ -160,9 +165,6 @@ public class AboutActivity extends MainActivity {
         super.onResume();
 
         showTopBarWithTitle(getString(R.string.about));
-        if (getResources().getBoolean(R.bool.hide_bottom_bar_on_second_level_views)) {
-            hideTabBar();
-        }
 
         Core core = LinphoneManager.getCore();
         if (core != null) {

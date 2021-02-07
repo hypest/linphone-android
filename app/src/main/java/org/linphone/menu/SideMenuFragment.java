@@ -42,11 +42,11 @@ import org.linphone.R;
 import org.linphone.activities.AboutActivity;
 import org.linphone.activities.MainActivity;
 import org.linphone.assistant.MenuAssistantActivity;
+import org.linphone.contacts.ContactsActivity;
 import org.linphone.core.Core;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 import org.linphone.core.tools.Log;
-import org.linphone.recording.RecordingsActivity;
 import org.linphone.settings.LinphonePreferences;
 import org.linphone.settings.SettingsActivity;
 import org.linphone.utils.LinphoneUtils;
@@ -90,11 +90,18 @@ public class SideMenuFragment extends Fragment {
                     new SideMenuItem(
                             getResources().getString(R.string.inapp), R.drawable.menu_options));
         }
-        if (!getResources().getBoolean(R.bool.hide_recordings_from_side_menu)) {
+        if (getActivity()
+                .getClass()
+                .getSimpleName()
+                .equals(ContactsActivity.class.getSimpleName())) {
             sideMenuItems.add(
                     new SideMenuItem(
-                            getResources().getString(R.string.menu_recordings),
-                            R.drawable.menu_recordings));
+                            getResources().getString(R.string.menu_contact_new),
+                            R.drawable.contact_add));
+            sideMenuItems.add(
+                    new SideMenuItem(
+                            getResources().getString(R.string.menu_contact_edit),
+                            R.drawable.contact_add));
         }
         sideMenuItems.add(
                 new SideMenuItem(
@@ -123,12 +130,16 @@ public class SideMenuFragment extends Fragment {
                             }
                         } else if (selectedItem.equals(getString(R.string.menu_settings))) {
                             startActivity(new Intent(getActivity(), SettingsActivity.class));
+                        } else if (selectedItem.equals(getString(R.string.menu_contact_new))) {
+                            ((ContactsActivity) getActivity()).showContactEdit(null);
+                            closeDrawer();
+                        } else if (selectedItem.equals(getString(R.string.menu_contact_edit))) {
+                            ((ContactsActivity) getActivity()).enterContactEditMode();
+                            closeDrawer();
                         } else if (selectedItem.equals(getString(R.string.menu_about))) {
                             startActivity(new Intent(getActivity(), AboutActivity.class));
                         } else if (selectedItem.equals(getString(R.string.menu_assistant))) {
                             startActivity(new Intent(getActivity(), MenuAssistantActivity.class));
-                        } else if (selectedItem.equals(getString(R.string.menu_recordings))) {
-                            startActivity(new Intent(getActivity(), RecordingsActivity.class));
                         }
                     }
                 });

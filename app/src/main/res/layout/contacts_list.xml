@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/light_grey_color">
 
     <LinearLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:visibility="gone"
         android:background="?attr/lighToolbarBackgroundColor"
         android:orientation="horizontal">
 
@@ -91,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
+        android:visibility="gone"
         android:layout_margin="10dp">
 
         <SearchView

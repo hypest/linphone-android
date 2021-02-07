@@ -23,6 +23,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.ContactsContract;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
-import org.linphone.compatibility.Compatibility;
 import org.linphone.core.Core;
 import org.linphone.core.Friend;
 import org.linphone.core.FriendList;
@@ -122,8 +122,10 @@ class AsyncContactsLoader extends AsyncTask<Void, Void, AsyncContactsLoader.Asyn
         if (ContactsManager.getInstance().hasReadContactsAccess()) {
             String selection = null;
             if (mContext.getResources().getBoolean(R.bool.fetch_contacts_from_default_directory)) {
-                Log.i("[Contacts Manager] Only fetching contacts in default directory");
-                selection = ContactsContract.Data.IN_DEFAULT_DIRECTORY + " == 1";
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Log.i("[Contacts Manager] Only fetching contacts in default directory");
+                    selection = ContactsContract.Data.IN_DEFAULT_DIRECTORY + " == 1";
+                }
             }
 
             Cursor c =
@@ -284,7 +286,6 @@ class AsyncContactsLoader extends AsyncTask<Void, Void, AsyncContactsLoader.Asyn
             listener.onContactsUpdated();
         }
 
-        Compatibility.createChatShortcuts(mContext);
         Log.i("[Contacts Manager] Synchronization finished");
     }
 

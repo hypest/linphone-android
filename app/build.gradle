@@ -61,6 +61,8 @@ excludePackage.add('**/LICENSE.txt')
 
 /////////////////////////
 
+def hypestModsVersion = "v1.0.0"
+
 repositories {
     maven {
         url file(LinphoneSdkBuildDir + '/maven_repository/')
@@ -79,7 +81,7 @@ android {
 
     compileSdkVersion 29
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 4300
         versionName "${project.version}"
@@ -123,6 +125,8 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
+            resValue "string", "hypest_modifications_version", hypestModsVersion
+
             resValue "string", "sync_account_type", getPackageName() + ".sync"
             resValue "string", "file_provider", getPackageName() + ".provider"
             resValue "string", "linphone_address_mime_type", "vnd.android.cursor.item/vnd." + getPackageName() + ".provider.sip_address"
@@ -135,6 +139,8 @@ android {
             applicationIdSuffix ".debug"
             debuggable true
             jniDebuggable true
+
+            resValue "string", "hypest_modifications_version", hypestModsVersion
 
             resValue "string", "sync_account_type", getPackageName() + ".sync"
             resValue "string", "file_provider", getPackageName() + ".debug.provider"

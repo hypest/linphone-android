@@ -161,7 +161,7 @@ public class SelectableHelper {
 
     private void quitEditionMode() {
         mAdapter.enableEdition(false);
-        mTopBar.setVisibility(View.VISIBLE);
+        //        mTopBar.setVisibility(View.VISIBLE);
         mEditTopBar.setVisibility(View.GONE);
         mDeleteSelectionButton.setEnabled(false);
         mSelectAllButton.setVisibility(View.GONE);
@@ -170,7 +170,7 @@ public class SelectableHelper {
 
     public void enterEditionMode() {
         mAdapter.enableEdition(true);
-        mTopBar.setVisibility(View.GONE);
+        //        mTopBar.setVisibility(View.GONE);
         mEditTopBar.setVisibility(View.VISIBLE);
         mDeleteSelectionButton.setEnabled(false);
         mSelectAllButton.setVisibility(View.VISIBLE);

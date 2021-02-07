@@ -31,8 +31,6 @@ import org.linphone.R;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
-import org.linphone.core.ChatMessage;
-import org.linphone.core.ChatRoom;
 import org.linphone.core.Core;
 import org.linphone.core.tools.Log;
 
@@ -79,19 +77,6 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 return;
             }
 
-            ChatRoom room = core.getChatRoom(remoteAddr, localAddr);
-            if (room == null) {
-                Log.e(
-                        "[Notification Broadcast Receiver] Couldn't find chat room for remote address "
-                                + remoteSipAddr
-                                + " and local address "
-                                + localyIdentity);
-                onError(context, notifId);
-                return;
-            }
-
-            room.markAsRead();
-
             if (intent.getAction().equals(Compatibility.INTENT_REPLY_NOTIF_ACTION)) {
                 final String reply = getMessageText(intent).toString();
                 if (reply == null) {
@@ -99,13 +84,6 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     onError(context, notifId);
                     return;
                 }
-
-                ChatMessage msg = room.createMessage(reply);
-                msg.setUserData(notifId);
-                msg.addListener(
-                        LinphoneContext.instance().getNotificationManager().getMessageListener());
-                msg.send();
-                Log.i("[Notification Broadcast Receiver] Reply sent for notif id " + notifId);
             } else {
                 LinphoneContext.instance().getNotificationManager().dismissNotification(notifId);
             }
@@ -144,7 +122,10 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     }
 
     private CharSequence getMessageText(Intent intent) {
-        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        Bundle remoteInput = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
+            remoteInput = RemoteInput.getResultsFromIntent(intent);
+        }
         if (remoteInput != null) {
             return remoteInput.getCharSequence(Compatibility.KEY_TEXT_REPLY);
         }

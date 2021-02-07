@@ -31,15 +31,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
-import org.linphone.call.views.LinphoneLinearLayoutManager;
+import org.linphone.activities.MainActivity;
 import org.linphone.utils.SelectableHelper;
 
 public class ContactsFragment extends Fragment
@@ -56,7 +55,7 @@ public class ContactsFragment extends Fragment
     private int mLastKnownPosition;
     private SearchView mSearchView;
     private ProgressBar mContactsFetchInProgress;
-    private LinearLayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
     private Context mContext;
     private SelectableHelper mSelectionHelper;
     private ContactsAdapter mContactAdapter;
@@ -167,15 +166,15 @@ public class ContactsFragment extends Fragment
                     }
                 });
 
-        mLayoutManager = new LinphoneLinearLayoutManager(mContext);
+        mLayoutManager = new GridLayoutManager(mContext, 2);
         mContactsList.setLayoutManager(mLayoutManager);
 
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(
-                        mContactsList.getContext(), mLayoutManager.getOrientation());
-        dividerItemDecoration.setDrawable(
-                getActivity().getResources().getDrawable(R.drawable.divider));
-        mContactsList.addItemDecoration(dividerItemDecoration);
+        //        DividerItemDecoration dividerItemDecoration =
+        //                new DividerItemDecoration(
+        //                        mContactsList.getContext(), mLayoutManager.getOrientation());
+        //        dividerItemDecoration.setDrawable(
+        //                getActivity().getResources().getDrawable(R.drawable.divider));
+        //        mContactsList.addItemDecoration(dividerItemDecoration);
 
         return view;
     }
@@ -192,24 +191,28 @@ public class ContactsFragment extends Fragment
         ((ContactsActivity) getActivity()).showContactDetails(contact);
     }
 
-    @Override
-    public void onItemClicked(int position) {
+    private void newOutgoingCall(int position) {
         LinphoneContact contact = (LinphoneContact) mContactAdapter.getItem(position);
 
+        mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
+        ((MainActivity) getActivity())
+                .newOutgoingCall(contact.getNumbersOrAddresses().get(0).getValue());
+    }
+
+    @Override
+    public void onItemClicked(int position) {
         if (mContactAdapter.isEditionEnabled()) {
-            mContactAdapter.toggleSelection(position);
-        } else {
+            LinphoneContact contact = (LinphoneContact) mContactAdapter.getItem(position);
             mLastKnownPosition = mLayoutManager.findFirstVisibleItemPosition();
-            ((ContactsActivity) getActivity()).showContactDetails(contact);
+            ((ContactsActivity) getActivity()).showContactEdit(contact);
+        } else {
+            newOutgoingCall(position);
         }
     }
 
     @Override
     public boolean onItemLongClicked(int position) {
-        if (!mContactAdapter.isEditionEnabled()) {
-            mSelectionHelper.enterEditionMode();
-        }
-        mContactAdapter.toggleSelection(position);
+        newOutgoingCall(position);
         return true;
     }
 
@@ -224,8 +227,6 @@ public class ContactsFragment extends Fragment
 
         changeContactsToggle();
         invalidate();
-
-        ((ContactsActivity) (getActivity())).showTabBar();
     }
 
     @Override
@@ -266,6 +267,12 @@ public class ContactsFragment extends Fragment
             }
         }
         ContactsManager.getInstance().deleteMultipleContactsAtOnce(ids);
+    }
+
+    public void enterContactEditMode() {
+        if (!mContactAdapter.isEditionEnabled()) {
+            mSelectionHelper.enterEditionMode();
+        }
     }
 
     private void searchContacts(String search) {

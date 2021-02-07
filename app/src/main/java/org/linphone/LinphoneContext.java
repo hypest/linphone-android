@@ -143,17 +143,20 @@ public class LinphoneContext {
                             Core core, Call call, Call.State state, String message) {
                         Log.i("[Context] Call state is [", state, "]");
 
-                        if (mContext.getResources().getBoolean(R.bool.enable_call_notification)) {
-                            mNotificationManager.displayCallNotification(call);
-                        }
+                        //                        if
+                        // (mContext.getResources().getBoolean(R.bool.enable_call_notification)) {
+                        //
+                        // mNotificationManager.displayCallNotification(call);
+                        //                        }
 
                         if (state == Call.State.IncomingReceived
                                 || state == Call.State.IncomingEarlyMedia) {
                             // Starting SDK 24 (Android 7.0) we rely on the fullscreen intent of the
                             // call incoming notification
-                            if (Version.sdkStrictlyBelow(Version.API24_NOUGAT_70)) {
-                                if (!mLinphoneManager.getCallGsmON()) onIncomingReceived();
-                            }
+                            //                            if
+                            // (Version.sdkStrictlyBelow(Version.API24_NOUGAT_70)) {
+                            if (!mLinphoneManager.getCallGsmON()) onIncomingReceived();
+                            //                            }
 
                             // In case of push notification Service won't be started until here
                             if (!LinphoneService.isReady()) {
@@ -171,11 +174,6 @@ public class LinphoneContext {
                                 || state == Call.State.Error) {
                             if (LinphoneService.isReady()) {
                                 LinphoneService.instance().destroyOverlay();
-                            }
-
-                            if (state == Call.State.Released
-                                    && call.getCallLog().getStatus() == Call.Status.Missed) {
-                                mNotificationManager.displayMissedCallNotification(call);
                             }
                         }
                     }

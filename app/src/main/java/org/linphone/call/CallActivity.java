@@ -53,7 +53,6 @@ import org.linphone.LinphoneContext;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
 import org.linphone.activities.LinphoneGenericActivity;
-import org.linphone.chat.ChatActivity;
 import org.linphone.compatibility.Compatibility;
 import org.linphone.contacts.ContactsManager;
 import org.linphone.contacts.ContactsUpdatedListener;
@@ -76,7 +75,7 @@ public class CallActivity extends LinphoneGenericActivity
         implements CallStatusBarFragment.StatsClikedListener,
                 ContactsUpdatedListener,
                 CallActivityInterface {
-    private static final int SECONDS_BEFORE_HIDING_CONTROLS = 4000;
+    private static final int SECONDS_BEFORE_HIDING_CONTROLS = 15000;
     private static final int SECONDS_BEFORE_DENYING_CALL_UPDATE = 30000;
 
     private static final int CAMERA_TO_TOGGLE_VIDEO = 0;
@@ -327,16 +326,6 @@ public class CallActivity extends LinphoneGenericActivity
                     }
                 });
 
-        ImageView chat = findViewById(R.id.chat);
-        chat.setEnabled(!getResources().getBoolean(R.bool.disable_chat));
-        chat.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        goToChatList();
-                    }
-                });
-
         mPause = findViewById(R.id.pause);
         mPause.setOnClickListener(
                 new View.OnClickListener() {
@@ -492,6 +481,15 @@ public class CallActivity extends LinphoneGenericActivity
         }
 
         if (LinphoneService.isReady()) LinphoneService.instance().destroyOverlay();
+
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
     @Override
@@ -942,13 +940,6 @@ public class CallActivity extends LinphoneGenericActivity
         Intent intent = new Intent();
         intent.setClass(this, DialerActivity.class);
         intent.putExtra("isTransfer", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
-
-    private void goToChatList() {
-        Intent intent = new Intent();
-        intent.setClass(this, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }

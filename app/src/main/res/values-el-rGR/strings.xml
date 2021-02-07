@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Linphone</string>
+    <string name="service_name">Linphone Service</string>
+    <string name="addressbook_label">Linphone</string>
+    <string name="notification_title">Linphone</string>
+    <string name="wait_dialog_text">Έναρξη</string>
+    <string name="notification_registered">Συνδεδεμένος: %s</string>
+    <string name="notification_register_failure">Αποτυχία σύνδεσης: %s</string>
+    <string name="about_version">Linphone Android %s</string>
+    <string name="about_liblinphone_version">Linphone Core %s</string>
+    <string name="about_liblinphone_sdk_version">Linphone SDK %s</string>
+    <string name="about_hypest_version">Hypest αλλαγές %s</string>
+    <string name="notification_call_hangup_label">Κλείσιμο</string>
+    <string name="notification_call_answer_label">Απάντηση</string>
+    <string name="outgoing">Εξερχόμενη</string>
+    <string name="incoming">Εισερχόμενη</string>
+    <string name="outgoing_call">Εξερχόμενη κλήση</string>
+    <string name="incoming_call">Εισερχόμενη κλήση</string>
+
+    <!-- Status Bar -->
+    <string name="status_connected">Συνδεδεμένος</string>
+    <string name="status_not_connected">Αποσυνδεδεμένος</string>
+    <string name="status_in_progress">Συνδεση σε εξέλιξη</string>
+    <string name="status_error">Αποτυχία σύνδεσης</string>
+    <string name="voicemail_unread"> αδιάβαστα μηνύματα</string>
+
+    <!-- Side Menu -->
+    <string name="menu_logout">Αποσύνδεση</string>
+    <string name="menu_assistant">Βοηθός σύνδεσης</string>
+    <string name="menu_settings">Ρυθμίσεις</string>
+    <string name="menu_contact_new">Νέα επαφή</string>
+    <string name="menu_contact_edit">Επεξεργασία επαφών</string>
+    <string name="menu_about">Περί</string>
+    <string name="quit">Έξοδος</string>
+</resources>

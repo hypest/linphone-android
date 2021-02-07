@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import org.linphone.R;
-import org.linphone.compatibility.Compatibility;
 import org.linphone.mediastream.Version;
 import org.linphone.settings.widget.SettingListenerBase;
 import org.linphone.settings.widget.SwitchSetting;
@@ -121,19 +120,6 @@ public class ContactSettingsFragment extends SettingsFragment {
                     @Override
                     public void onBoolValueChanged(boolean newValue) {
                         mPrefs.enabledDisplayContactOrganization(newValue);
-                    }
-                });
-
-        mCreateShortcuts.setListener(
-                new SettingListenerBase() {
-                    @Override
-                    public void onBoolValueChanged(boolean newValue) {
-                        mPrefs.enableChatRoomsShortcuts(newValue);
-                        if (newValue) {
-                            Compatibility.createChatShortcuts(getActivity());
-                        } else {
-                            Compatibility.removeChatShortcuts(getActivity());
-                        }
                     }
                 });
     }

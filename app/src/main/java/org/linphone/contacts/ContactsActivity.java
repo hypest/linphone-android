@@ -24,7 +24,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 import org.linphone.R;
 import org.linphone.activities.MainActivity;
@@ -99,7 +98,7 @@ public class ContactsActivity extends MainActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mContactsSelected.setVisibility(View.VISIBLE);
+        makeFullscreen();
     }
 
     @Override
@@ -192,6 +191,13 @@ public class ContactsActivity extends MainActivity {
 
     public void showContactEdit(LinphoneContact contact) {
         showContactEdit(contact, true);
+    }
+
+    public void enterContactEditMode() {
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if (currentFragment instanceof ContactsFragment) {
+            ((ContactsFragment) currentFragment).enterContactEditMode();
+        }
     }
 
     private void showContactsList() {
